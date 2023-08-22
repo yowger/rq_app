@@ -1,7 +1,9 @@
 import { useRef } from "react"
-import useFetchPosts from "../hooks/useFetchPosts"
 import { useIntersection } from "@mantine/hooks"
+import useFetchPosts from "../hooks/useFetchPosts"
 import Post from "../components/Post"
+import SkeletonPost from "../components/SkeletonPost"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 const Home = () => {
     const {
@@ -15,12 +17,6 @@ const Home = () => {
         isFetchingNextPage,
     } = useFetchPosts(10)
 
-    const lastPostRef = useRef(null)
-
-    const { ref, entry } = useIntersection({
-        root: lastPostRef.current,
-        threshold: 1,
-    })
     console.log({
         isLoading,
         isFetching,
@@ -30,33 +26,23 @@ const Home = () => {
         error,
     })
 
-    if (
-        entry?.isIntersecting &&
-        !isLoading &&
-        !isFetching &&
-        !isFetchingNextPage &&
-        hasNextPage
-    ) {
-        console.log("fetching")
-        fetchNextPage()
-    }
-
     return (
         <main>
-            {postData?.map((post, index) => {
-                const shouldUseRef = (index + 4) % 10 === 0 && hasNextPage
-
-                return (
-                    <Post
-                        key={post.id}
-                        {...post}
-                        ref={shouldUseRef ? ref : null}
-                    />
-                )
-            })}
-
-            {isFetching && <p>is fetching...</p>}
-            {isFetchingNextPage && <p>is fetching next page...</p>}
+            <InfiniteScroll
+                dataLength={postData ? postData.length : 0}
+                next={() => fetchNextPage()}
+                hasMore={hasNextPage}
+                loader={Array.from({ length: 4 }).map((_, index) => (
+                    <SkeletonPost key={index} />
+                ))}
+                endMessage={
+                    hasNextPage === false && <p>no more post to show</p>
+                }
+            >
+                {postData?.map((post) => {
+                    return <Post key={post.id} {...post} />
+                })}
+            </InfiniteScroll>
         </main>
     )
 }
