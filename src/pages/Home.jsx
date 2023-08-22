@@ -1,42 +1,64 @@
-import { Fragment } from "react"
-import useInfiniteFetchPosts from "../hooks/useInfiniteFetchPosts"
+import { useRef } from "react"
+import useFetchPosts from "../hooks/useFetchPosts"
+import { useIntersection } from "@mantine/hooks"
+import Post from "../components/Post"
 
-const Test2 = () => {
+const Home = () => {
     const {
-        data,
-        // isLoading,
-        // isError,
-        // error,
+        data: postData,
+        isLoading,
+        isError,
+        error,
         isFetching,
         hasNextPage,
         fetchNextPage,
         isFetchingNextPage,
-    } = useInfiniteFetchPosts(20)
+    } = useFetchPosts(10)
+
+    const lastPostRef = useRef(null)
+
+    const { ref, entry } = useIntersection({
+        root: lastPostRef.current,
+        threshold: 1,
+    })
+    console.log({
+        isLoading,
+        isFetching,
+        isFetchingNextPage,
+        hasNextPage,
+        isError,
+        error,
+    })
+
+    if (
+        entry?.isIntersecting &&
+        !isLoading &&
+        !isFetching &&
+        !isFetchingNextPage &&
+        hasNextPage
+    ) {
+        console.log("fetching")
+        fetchNextPage()
+    }
 
     return (
-        <div>
-            {isFetching && <p>is fetching...</p>}
-            {isFetchingNextPage && <p>is fetching next page...</p>}
-            {data?.pages.map((group, index) => {
+        <main>
+            {postData?.map((post, index) => {
+                const shouldUseRef = (index + 4) % 10 === 0 && hasNextPage
+
                 return (
-                    <Fragment key={index}>
-                        {group.data.map((post) => {
-                            return (
-                                <div key={post.id} className="">
-                                    <p className="text-lg">{post.id}</p>
-                                    <h2>{post.title}</h2>
-                                    <p>{post.body}</p>
-                                </div>
-                            )
-                        })}
-                    </Fragment>
+                    <Post
+                        key={post.id}
+                        {...post}
+                        ref={shouldUseRef ? ref : null}
+                    />
                 )
             })}
-            <button disabled={!hasNextPage} onClick={fetchNextPage}>
-                Load more...
-            </button>
-        </div>
+
+            {isFetching && <p>is fetching...</p>}
+            {isFetchingNextPage && <p>is fetching next page...</p>}
+        </main>
     )
 }
 
-export default Test2
+export default Home

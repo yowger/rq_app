@@ -1,9 +1,7 @@
-// import { useInfiniteQuery } from "react-query"
 import axiosPublic from "../api/axios"
 import useInfiniteFetch from "./useInfiniteFetch"
 
 const fetchPosts = async (page = 0, limit = 10) => {
-    console.log({ page, limit })
     const response = await axiosPublic({
         url: `/posts?_page=${page + 1}&_limit=${limit}`,
     })
@@ -15,7 +13,7 @@ const fetchPosts = async (page = 0, limit = 10) => {
     return { data, totalCount }
 }
 
-const useInfiniteFetchPosts = (limit = 10) => {
+const useFetchPosts = (limit = 10) => {
     const {
         data,
         isLoading,
@@ -33,7 +31,8 @@ const useInfiniteFetchPosts = (limit = 10) => {
     )
 
     return {
-        data,
+        data: data?.pages.flatMap(({ data }) => data) || [],
+        // data,
         isLoading,
         isError,
         error,
@@ -44,4 +43,4 @@ const useInfiniteFetchPosts = (limit = 10) => {
     }
 }
 
-export default useInfiniteFetchPosts
+export default useFetchPosts
