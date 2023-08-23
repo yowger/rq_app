@@ -2,14 +2,18 @@ const SkeletonPost = () => {
     return (
         <div
             role="status"
-            className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center mb-10"
+            className="animate-pulse mb-4 bg-white p-4 border-[1.5px] flex gap-4"
         >
-            <div className="w-full">
-                <div className="h-2.5 bg-gray-200 rounded-full w-[480px] mb-4"></div>
-                <div className="h-2 bg-gray-200 rounded-full mb-2.5 max-w-[600px]"></div>
-                <div className="h-2 bg-gray-200 rounded-full max-w-[550px] mb-2.5"></div>
-                <div className="h-2 bg-gray-200 rounded-full max-w-[570px] mb-2.5"></div>
-                <div className="h-2 bg-gray-200 rounded-full max-w-[480px]"></div>
+            <div className="h-10">
+                <div className="relative w-10 h-10 overflow-hidden bg-gray-200 rounded-full"></div>
+            </div>
+
+            <div className="w-[65ch]">
+                <div className="h-2 bg-gray-200 rounded-full w-[90px] mb-2.5" />
+                <div className="h-3 bg-gray-200 rounded-full w-[350px] mb-4" />
+                <div className="h-2 bg-gray-200 rounded-full mb-2.5 max-w-[550px]" />
+                <div className="h-2 bg-gray-200 rounded-full max-w-[520px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full max-w-[510px]" />
             </div>
             <span className="sr-only">Loading more posts...</span>
         </div>

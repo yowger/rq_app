@@ -3,7 +3,7 @@ import useInfiniteFetch from "./useInfiniteFetch"
 
 const fetchPosts = async (page = 0, limit = 10) => {
     const response = await axiosPublic({
-        url: `/posts?_page=${page + 1}&_limit=${limit}`,
+        url: `/posts?_expand=user&_page=${page + 1}&_limit=${limit}`,
     })
 
     const { data, headers } = response
@@ -13,7 +13,7 @@ const fetchPosts = async (page = 0, limit = 10) => {
     return { data, totalCount }
 }
 
-const useFetchPosts = (limit = 10) => {
+const useFetchPosts = (limit) => {
     const {
         data,
         isLoading,
@@ -23,16 +23,14 @@ const useFetchPosts = (limit = 10) => {
         hasNextPage,
         fetchNextPage,
         isFetchingNextPage,
-    } = useInfiniteFetch(
-        "post",
-        ({ pageParam: page = 0 }) => fetchPosts(page, limit),
-        {},
-        { limit: 10 }
-    )
+    } = useInfiniteFetch({
+        queryKey: "post",
+        queryFn: ({ pageParam: page = 0 }) => fetchPosts(page, limit),
+        variables: { limit },
+    })
 
     return {
         data: data?.pages.flatMap(({ data }) => data) || [],
-        // data,
         isLoading,
         isError,
         error,

@@ -1,9 +1,16 @@
 import { useInfiniteQuery } from "react-query"
 
-const useInfiniteFetch = (key, queryFunction, options = {}, { limit = 10 }) => {
+const useInfiniteFetch = (props) => {
+    const {
+        queryKey,
+        queryFn,
+        options,
+        variables: { limit = 10 },
+    } = props
+
     return useInfiniteQuery({
-        queryKey: [key],
-        queryFn: queryFunction,
+        queryKey: [queryKey],
+        queryFn: queryFn,
         refetchOnWindowFocus: false,
         getNextPageParam: (lastPage, pages) => {
             if (Math.ceil(lastPage.totalCount / limit) > pages.length) {

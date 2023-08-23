@@ -4,6 +4,9 @@ import useFetchPosts from "../hooks/useFetchPosts"
 import Post from "../components/Post"
 import SkeletonPost from "../components/SkeletonPost"
 
+// scrapped, the problem with this is there are times when it makes multiple request especially if the network is slow, i could have made adjustment to prevent it but I decided to go with <InfiniteScroll> for readability and simplicity, on top of its features like improve performance but only rendering visible parts
+
+//I save this here cause it might come in handy in the future
 const Home = () => {
     const {
         data: postData,
