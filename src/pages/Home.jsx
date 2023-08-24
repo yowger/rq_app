@@ -15,7 +15,7 @@ const Home = () => {
         fetchNextPage,
         isFetchingNextPage,
     } = useFetchPosts(10)
-    // console.log({ postData })
+    console.log({ postData })
 
     // console.log({
     //     isLoading,
