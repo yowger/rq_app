@@ -4,8 +4,10 @@ const configureBaseUrl = () => {
     let BASE_URL
 
     if (import.meta.env.VITE_APP_ENV === "development") {
+        console.log("development")
         BASE_URL = "http://jsonplaceholder.typicode.com"
     } else {
+        console.log("not development")
         BASE_URL = "/api"
     }
 
