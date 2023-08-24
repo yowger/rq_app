@@ -1,9 +1,19 @@
 import axios from "axios"
 
-const BASE_URL = "http://jsonplaceholder.typicode.com"
+const configureBaseUrl = () => {
+    let BASE_URL
+
+    if (import.meta.env.VITE_APP_ENV === "development") {
+        BASE_URL = "http://jsonplaceholder.typicode.com"
+    } else {
+        BASE_URL = "/api"
+    }
+
+    return BASE_URL
+}
 
 const axiosPublic = axios.create({
-    baseURL: BASE_URL,
+    baseURL: configureBaseUrl(),
 })
 
 if (import.meta.env.VITE_APP_ENV === "development") {
