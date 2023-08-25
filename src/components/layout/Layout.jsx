@@ -30,6 +30,13 @@ const Layout = () => {
                     >
                         Code
                     </Link>
+                    <Link
+                        to="https://web.facebook.com/roger.pantil.1/"
+                        target="_blank"
+                        className="text-sm text-gray-600 hover:cursor-pointer hover:underline"
+                    >
+                        Facebook
+                    </Link>
                 </div>
             </footer>
         </div>
