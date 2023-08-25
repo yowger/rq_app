@@ -1,9 +1,12 @@
+import { useQueryClient } from "react-query"
 import axiosPublic from "../api/axios"
 import useInfiniteFetch from "./useInfiniteFetch"
 
-const fetchPosts = async (page = 0, limit = 10) => {
+const fetchPosts = async (page = 0, limit = 10, userId) => {
     const response = await axiosPublic({
-        url: `/posts?_expand=user&_page=${page + 1}&_limit=${limit}`,
+        url: `/posts?_expand=user&_page=${
+            page + 1
+        }&_limit=${limit}&userId=${userId}`,
     })
 
     const { data, headers } = response
@@ -13,7 +16,9 @@ const fetchPosts = async (page = 0, limit = 10) => {
     return { data, totalCount }
 }
 
-const useFetchPosts = (limit) => {
+const useFetchPostsByUser = (limit, userId) => {
+    const queryClient = useQueryClient()
+
     const {
         data,
         isLoading,
@@ -24,8 +29,15 @@ const useFetchPosts = (limit) => {
         fetchNextPage,
         isFetchingNextPage,
     } = useInfiniteFetch({
-        queryKey: ["post"],
-        queryFn: ({ pageParam: page = 0 }) => fetchPosts(page, limit),
+        queryKey: ["postByProfile", userId],
+        queryFn: ({ pageParam: page = 0 }) => fetchPosts(page, limit, userId),
+        options: {
+            initialData: () => {
+                const post = queryClient.getQueryData(["postByProfile", userId])
+
+                return post || undefined
+            },
+        },
         variables: { limit },
     })
 
@@ -41,4 +53,4 @@ const useFetchPosts = (limit) => {
     }
 }
 
-export default useFetchPosts
+export default useFetchPostsByUser

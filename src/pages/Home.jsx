@@ -1,8 +1,11 @@
-import { useNavigate } from "react-router-dom"
 import useFetchPosts from "../hooks/useFetchPosts"
 import Post from "../components/Post"
 import SkeletonPost from "../components/loaders/SkeletonPost"
 import InfiniteScroll from "react-infinite-scroll-component"
+
+const SkeletonLoader = Array.from({ length: 5 }).map((_, index) => (
+    <SkeletonPost key={index} />
+))
 
 const Home = () => {
     const {
@@ -24,15 +27,6 @@ const Home = () => {
     //     isError,
     //     error,
     // })
-    const navigate = useNavigate()
-
-    const onClickPost = (id) => {
-        navigate(`/post/${id}`)
-    }
-
-    const SkeletonLoader = Array.from({ length: 4 }).map((_, index) => (
-        <SkeletonPost key={index} />
-    ))
 
     const endMessage = hasNextPage === false && <p>no more post to show</p>
 
@@ -46,9 +40,7 @@ const Home = () => {
                 endMessage={endMessage}
             >
                 {postData?.map((post) => {
-                    return (
-                        <Post onClick={onClickPost} key={post.id} {...post} />
-                    )
+                    return <Post key={post.id} {...post} />
                 })}
             </InfiniteScroll>
         </main>

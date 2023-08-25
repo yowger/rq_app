@@ -9,7 +9,7 @@ const useInfiniteFetch = (props) => {
     } = props
 
     return useInfiniteQuery({
-        queryKey: [queryKey],
+        queryKey: queryKey,
         queryFn: queryFn,
         refetchOnWindowFocus: false,
         getNextPageParam: (lastPage, pages) => {

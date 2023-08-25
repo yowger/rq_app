@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge"
 
-const Avatar = ({ className }) => {
+const Avatar = ({ className, svgClassName }) => {
     return (
         <div
             className={twMerge(
@@ -9,7 +9,10 @@ const Avatar = ({ className }) => {
             )}
         >
             <svg
-                className="absolute w-12 h-12 text-gray-400 -left-1"
+                className={twMerge(
+                    "svg absolute w-12 h-12 text-gray-400 -left-1",
+                    svgClassName
+                )}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"

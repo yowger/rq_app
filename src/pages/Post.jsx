@@ -16,7 +16,11 @@ const Post = () => {
     return (
         <div className="bg-white">
             {postData ? (
-                <PostComponent {...postData} className="border-0" />
+                <PostComponent
+                    {...postData}
+                    shouldLinkToPost={false}
+                    className="border-0"
+                />
             ) : (
                 <SkeletonPost className="border-0" />
             )}

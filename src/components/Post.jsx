@@ -4,30 +4,30 @@ import { twMerge } from "tailwind-merge"
 import clsx from "clsx"
 import Avatar from "./common/Avatar"
 
-const Post = ({ onClick, className, ...rest }) => {
+const Post = ({ shouldLinkToPost = true, className, ...rest }) => {
     const navigate = useNavigate()
 
     const { id, user, userId, title, body } = rest
-    const { username } = user
+    const { username } = user || ""
 
     const onClickPost = (event) => {
+        if (!shouldLinkToPost) return
+
         event.stopPropagation()
 
-        if (onClick) {
-            onClick(id)
-        }
+        navigate(`/post/${id}`)
     }
 
     const onClickAvatar = (event) => {
         event.stopPropagation()
 
-        navigate("/profile")
+        navigate(`/profile/${userId}`)
     }
 
     const onClickUserName = (event) => {
         event.stopPropagation()
 
-        navigate("/profile")
+        navigate(`/profile/${userId}`)
     }
 
     return (
@@ -35,17 +35,14 @@ const Post = ({ onClick, className, ...rest }) => {
             className={twMerge(
                 clsx(
                     "mb-4 bg-white p-4 border-[1.5px] hover:border-gray-400 flex gap-4",
-                    onClick && "cursor-pointer",
+                    shouldLinkToPost && "cursor-pointer",
                     className
                 )
             )}
             onClick={onClickPost}
         >
-            <div className="h-10">
-                <Avatar
-                    onClick={onClickAvatar}
-                    className="hover:brightness-90 z-10 cursor-pointer bg"
-                />
+            <div onClick={onClickAvatar} className="h-10">
+                <Avatar className="hover:brightness-90 z-10 cursor-pointer bg" />
             </div>
 
             <div className="max-w-[65ch]">
@@ -66,9 +63,9 @@ const Post = ({ onClick, className, ...rest }) => {
 }
 
 Post.propTypes = {
-    userId: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired,
+    userId: PropTypes.number,
+    title: PropTypes.string,
+    body: PropTypes.string,
 }
 
 Post.displayName = "Post"

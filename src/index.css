@@ -2,7 +2,7 @@
 
 @layer base {
     html {
-        @apply bg-[#edeff1] w-screen h-screen text-gray-800;
+        @apply bg-[#edeff1] text-gray-800;
     }
 }
 
