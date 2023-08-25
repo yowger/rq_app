@@ -1,51 +1,49 @@
 import { useParams } from "react-router-dom"
-import { useQuery, useQueryClient } from "react-query"
+import useFetchPost from "../hooks/useFetchPost"
+import Comment from "../components/Comment"
 import PostComponent from "../components/Post"
-import axiosPublic from "../api/axios"
-import SkeletonPost from "../components/SkeletonPost"
+import SkeletonComment from "../components/loaders/SkeletonComment"
+import SkeletonPost from "../components/loaders/SkeletonPost"
 
-const fetchPost = async (props) => {
-    const { queryKey } = props
-    const id = queryKey[1]
-
-    const response = await axiosPublic({
-        url: `/posts/${id}?_expand=user`,
-    })
-
-    return response.data
-}
+const SkeletonsComment = () =>
+    Array.from({ length: 5 }).map((_, index) => <SkeletonComment key={index} />)
 
 const Post = () => {
     const { id } = useParams()
-    const queryClient = useQueryClient()
 
-    const result = useQuery({
-        queryKey: ["post", id],
-        queryFn: fetchPost,
-        refetchOnWindowFocus: false,
-        initialData: () => {
-            const post = queryClient
-                .getQueryData("post")
-                ?.pages.flatMap((page) => page.data)
-                .filter((post) => post.id.toString() === id)[0]
-
-            return post || undefined
-        },
-    })
-    const {
-        data: postData,
-        isLoading: postIsLoading,
-        isError: postIsError,
-        error: postError,
-        isFetching: postIsFetching,
-    } = result
-
-    console.log({ result })
-    console.log({ postData })
+    const { data: postData } = useFetchPost(id)
 
     return (
-        <div>
-            {postIsLoading ? <SkeletonPost /> : <PostComponent {...postData} />}
+        <div className="bg-white">
+            {postData ? (
+                <PostComponent {...postData} className="border-0" />
+            ) : (
+                <SkeletonPost className="border-0" />
+            )}
+
+            <section className="px-4">
+                <div className="">
+                    {postData?.comments && (
+                        <p className="border-b py-2">
+                            {postData.comments.length} comments
+                        </p>
+                    )}
+                </div>
+
+                {postData?.comments ? (
+                    postData.comments.map((comment) => {
+                        return (
+                            <Comment
+                                key={comment.id}
+                                {...comment}
+                                className="border-b px-0"
+                            />
+                        )
+                    })
+                ) : (
+                    <SkeletonsComment />
+                )}
+            </section>
         </div>
     )
 }

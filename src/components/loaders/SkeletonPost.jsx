@@ -1,8 +1,13 @@
-const SkeletonPost = () => {
+import { twMerge } from "tailwind-merge"
+
+const SkeletonPost = ({ className }) => {
     return (
         <div
             role="status"
-            className="animate-pulse mb-4 bg-white p-4 border-[1.5px] flex gap-4"
+            className={twMerge(
+                "animate-pulse mb-4 bg-white p-4 border-[1.5px] flex gap-4",
+                className
+            )}
         >
             <div className="h-10">
                 <div className="relative w-10 h-10 overflow-hidden bg-gray-200 rounded-full"></div>

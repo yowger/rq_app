@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import useFetchPosts from "../hooks/useFetchPosts"
 import Post from "../components/Post"
-import SkeletonPost from "../components/SkeletonPost"
+import SkeletonPost from "../components/loaders/SkeletonPost"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 const Home = () => {
@@ -15,7 +15,6 @@ const Home = () => {
         fetchNextPage,
         isFetchingNextPage,
     } = useFetchPosts(10)
-    console.log({ postData })
 
     // console.log({
     //     isLoading,

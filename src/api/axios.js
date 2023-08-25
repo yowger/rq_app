@@ -16,7 +16,7 @@ const axiosPublic = axios.create({
     baseURL: configureBaseUrl(),
 })
 
-// if (import.meta.env.VITE_APP_ENV === "development") {
+if (import.meta.env.VITE_APP_ENV === "development") {
     axiosPublic.interceptors.request.use((config) => {
         const { baseURL, url } = config
         const requestUrl = baseURL + url
@@ -25,6 +25,6 @@ const axiosPublic = axios.create({
 
         return config
     })
-// }
+}
 
 export default axiosPublic
