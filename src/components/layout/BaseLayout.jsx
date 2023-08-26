@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom"
 
 // todo - clean up
-const Layout = () => {
+const BaseLayout = () => {
     return (
         <div className="container max-w-screen-md mx-auto px-5 pb-5 flex flex-col min-h-screen">
             <nav className="mb-6 h-10 flex items-center">
@@ -45,21 +45,5 @@ const Layout = () => {
         </div>
     )
 }
-/*
-function Copyright(props) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            {"Copyright © "}
-            Roger Pantil {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    )
-}
-*/
 
-export default Layout
+export default BaseLayout

@@ -5,7 +5,6 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import Post from "../components/Post"
 import SkeletonPost from "../components/loaders/SkeletonPost"
 import useFetchPostsByUser from "../hooks/useFetchPostsByUser"
-import Avatar from "../components/common/Avatar"
 import useFetchAlbums from "../hooks/useFetchAlbums"
 
 const SkeletonLoader = Array.from({ length: 5 }).map((_, index) => (
@@ -13,24 +12,15 @@ const SkeletonLoader = Array.from({ length: 5 }).map((_, index) => (
 ))
 
 const Profile = () => {
-    const { id } = useParams()
+    const { profileId } = useParams()
     const navigate = useNavigate()
-
-    const {
-        data: profileData,
-        isLoading: profileIsLoading,
-        isError: profileIsError,
-        error: profileError,
-    } = useFetchProfile(id)
-    console.log({ profileData })
 
     const {
         data: albumData,
         isLoading: albumIsLoading,
         isError: albumIsError,
         error: albumError,
-    } = useFetchAlbums(id)
-    console.log("albums", albumData)
+    } = useFetchAlbums(profileId)
 
     const {
         data: postData,
@@ -40,53 +30,36 @@ const Profile = () => {
         isFetching: postIsFetching,
         hasNextPage,
         fetchNextPage,
-        isFetchingNextPage,
-    } = useFetchPostsByUser(5, id)
-    console.log({ postData })
+    } = useFetchPostsByUser(5, profileId)
 
     const endMessage = hasNextPage === false && <p>no more post to show</p>
 
-    const onClickAlbum = (id) => {
-        navigate(`/photos/${id}`)
+    const onClickAlbum = (profileId, albumId) => {
+        navigate(`/profile/${profileId}/photos/${albumId}`)
     }
 
     return (
         <div>
-            <div className="bg-white p-4 mb-4 flex flex-col justify-center">
-                <section className="flex items-center flex-col">
-                    <Avatar
-                        className="w-20 h-20 mb-3"
-                        svgClassName="-left-2 -bottom-3.5 w-24 h-24"
-                    />
-                    {profileData && (
-                        <>
-                            <p className="text-lg font-semibold leading-6">
-                                {profileData.name}
-                            </p>
-                            <p className="text-gray-600 leading-6">
-                                {profileData.username}
-                            </p>
-                        </>
-                    )}
-                </section>
-            </div>
-
             <div className="bg-white p-4 mb-4 flex flex-col justify">
                 <section className="mb-2">
                     <h2 className="text-lg font-semibold leading-6 text-center mb-2">
                         Albums
                     </h2>
 
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid md:grid-cols-4 grid-cols-3 gap-2">
                         {albumData &&
                             albumData.map((album, index) => {
+                                const { id: albumId } = album
+
                                 return (
                                     <div
-                                        key={album.id}
+                                        key={albumId}
                                         className="bg-red-200 justify-center flex"
                                     >
                                         <img
-                                            onClick={() => onClickAlbum(id)}
+                                            onClick={() =>
+                                                onClickAlbum(profileId, albumId)
+                                            }
                                             src={`https://picsum.photos/125?random=${index}`}
                                             className="object-cover w-full rounded-sm cursor-pointer hover:brightness-105"
                                         />

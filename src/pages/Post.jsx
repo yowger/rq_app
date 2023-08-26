@@ -9,9 +9,9 @@ const SkeletonsComment = () =>
     Array.from({ length: 5 }).map((_, index) => <SkeletonComment key={index} />)
 
 const Post = () => {
-    const { id } = useParams()
+    const { postId } = useParams()
 
-    const { data: postData } = useFetchPost(id)
+    const { data: postData } = useFetchPost(postId)
 
     return (
         <div className="bg-white">

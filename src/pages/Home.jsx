@@ -7,6 +7,7 @@ const SkeletonLoader = Array.from({ length: 5 }).map((_, index) => (
     <SkeletonPost key={index} />
 ))
 
+// searching with prefetch?
 const Home = () => {
     const {
         data: postData,
