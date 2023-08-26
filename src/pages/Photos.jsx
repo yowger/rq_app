@@ -20,7 +20,6 @@ const Photos = () => {
 
     if (photosData && photosData.totalPages > pageNumber) {
         const nextPageNumber = pageNumber + 1
-
         queryClient.prefetchQuery(["photos", photoId, nextPageNumber], () =>
             fetchPhotos(photoId, pageNumber)
         )
