@@ -4,7 +4,7 @@ import BaseLayout from "./components/layout/BaseLayout"
 import Profile from "./pages/Profile"
 import Post from "./pages/Post"
 import Photos from "./pages/Photos"
-import ProfileLayout from "./components/layout/profileLayout"
+import ProfileLayout from "./components/layout/ProfileLayout"
 
 const App = () => {
     return (
